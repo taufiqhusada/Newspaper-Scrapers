@@ -374,7 +374,7 @@ class FoxNewsScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
         print('running get_pages()...')
 
-        profile = webdriver.FirefoxProfile()
+        profile = webdriver.FirefoxOptions()
         browser = webdriver.Firefox(profile)
 
         links = []
