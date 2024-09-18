@@ -9,7 +9,8 @@ db = client.News_database
 def run_scraper (scraper):
     scraper.get_pages()
     data = scraper.newspaper_parser()
-    scraper.write_to_mongo(data, db.articles_about_fake_news_rerun)
+    # scraper.write_to_mongo(data, db.articles_about_fake_news_rerun)
+    scraper.write_to_csv(data, "output.csv")
 
 
 def initialize_scraper (args):
