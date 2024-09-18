@@ -26,7 +26,7 @@ class NewspaperScraper:
         return self.newspaper
 
     def get_pages (self):
-        print 'Unimplemented for ' + self.newspaper + ' scraper'
+        print('Unimplemented for ' + self.newspaper + ' scraper')
         return
 
     def check_dates (self, date):
@@ -36,7 +36,7 @@ class NewspaperScraper:
         return False
 
     def newspaper_parser (self, sleep_time=0):
-        print 'running newspaper_parser()...'
+        print('running newspaper_parser()...')
 
         results = []
         count = 0
@@ -63,35 +63,35 @@ class NewspaperScraper:
                 'html': article.html
             }
 
-            print data['title']
-            print data['text']
-            print
-            print
+            print(data['title'])
+            print(data['text'])
+            print()
+            print()
             results.append(data)
 
             count += 1
-            print count
+            print(count)
             time.sleep(sleep_time)
 
         return results
 
     def write_to_csv (self, data, file_name):
-        print 'writing to CSV...'
+        print('writing to CSV...')
 
-        keys = data[0].keys()
+        keys = list(data[0].keys())
         with open(file_name, 'wb') as output_file:
             dict_writer = csv.DictWriter(output_file, keys)
             dict_writer.writeheader()
             dict_writer.writerows(data)
 
     def write_to_mongo (self, data, collection):
-        print 'writing to mongoDB...'
+        print('writing to mongoDB...')
         count = 0
 
         for d in data:
             collection.insert(d)
             count += 1
-            print count
+            print(count)
 
 
 class NewspaperScraperWithAuthentication(NewspaperScraper):
@@ -116,13 +116,13 @@ class NewspaperScraperWithAuthentication(NewspaperScraper):
             self.submit_id = 'submitButton'
 
     def newspaper_parser (self, sleep_time=0):
-        print 'running newspaper_parser()...'
+        print('running newspaper_parser()...')
         results = []
         count = 0
 
         profile = webdriver.FirefoxProfile()
         browser = webdriver.Firefox(profile)
-        credential_names = self.credentials.keys()
+        credential_names = list(self.credentials.keys())
 
         browser.get(self.login_url)
         cred1 = browser.find_element_by_id(credential_names[0])
@@ -166,22 +166,22 @@ class NewspaperScraperWithAuthentication(NewspaperScraper):
                 'html': article.html
             }
 
-            print data['title']
-            print data['text']
-            print
-            print
+            print(data['title'])
+            print(data['text'])
+            print()
+            print()
             results.append(data)
             time.sleep(sleep_time)
 
             count += 1
-            print count
+            print(count)
 
         return results
 
 
 class ChicagoTribuneScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         profile = webdriver.FirefoxProfile()
         browser = webdriver.Firefox(profile)
@@ -212,7 +212,7 @@ class ChicagoTribuneScraper(NewspaperScraper):
                     ltext = 'http://www.chicagotribune.com' + link.get('href')
 
                     if ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
                 else:
@@ -229,7 +229,7 @@ class ChicagoTribuneScraper(NewspaperScraper):
 
 class LaTimesScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         profile = webdriver.FirefoxProfile()
         browser = webdriver.Firefox(profile)
@@ -260,7 +260,7 @@ class LaTimesScraper(NewspaperScraper):
                     ltext = 'http://www.latimes.com' + link.get('href')
 
                     if ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
                 else:
@@ -277,7 +277,7 @@ class LaTimesScraper(NewspaperScraper):
 
 class WashPostScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         browser = webdriver.Chrome()
 
@@ -303,7 +303,7 @@ class WashPostScraper(NewspaperScraper):
                     ltext = link.get('href')
 
                     if ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
                 else:
@@ -320,7 +320,7 @@ class WashPostScraper(NewspaperScraper):
 
 class SlateScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         browser = webdriver.Chrome()
 
@@ -338,7 +338,7 @@ class SlateScraper(NewspaperScraper):
                     section = self.get_section(ltext)
 
                     if (section == 'articles' or section == 'blogs') and ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
             header = soup.find('header', class_="tag-header").get_text().split()
@@ -372,7 +372,7 @@ class SlateScraper(NewspaperScraper):
 
 class FoxNewsScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         profile = webdriver.FirefoxProfile()
         browser = webdriver.Firefox(profile)
@@ -401,7 +401,7 @@ class FoxNewsScraper(NewspaperScraper):
                     section = self.get_section(ltext)
 
                     if section != 'v' and ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
                 else:
@@ -429,7 +429,7 @@ class FoxNewsScraper(NewspaperScraper):
 
 class PoliticoScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         links = []
         stop = False
@@ -453,7 +453,7 @@ class PoliticoScraper(NewspaperScraper):
                         continue
 
                     if (section == 'story' or section == 'blogs') and ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
                 else:
@@ -477,7 +477,7 @@ class PoliticoScraper(NewspaperScraper):
 
 class WeeklyStandardScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         browser = webdriver.Chrome()
 
@@ -495,7 +495,7 @@ class WeeklyStandardScraper(NewspaperScraper):
                     ltext = link.get('href')
 
                     if ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
                 else:
@@ -522,7 +522,7 @@ class WeeklyStandardScraper(NewspaperScraper):
 
 class BloombergScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         profile = webdriver.FirefoxProfile()
         browser = webdriver.Firefox(profile)
@@ -553,7 +553,7 @@ class BloombergScraper(NewspaperScraper):
                     section = self.get_section(ltext)
 
                     if section == 'articles' and ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
             index += 1
@@ -573,7 +573,7 @@ class BloombergScraper(NewspaperScraper):
 
 class TimeScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         profile = webdriver.FirefoxProfile()
         browser = webdriver.Firefox(profile)
@@ -598,7 +598,7 @@ class TimeScraper(NewspaperScraper):
                     ltext = link.find('a').get('href')
 
                     if ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
                 else:
@@ -620,7 +620,7 @@ class TimeScraper(NewspaperScraper):
 
 class CNNScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         browser = webdriver.Chrome()
 
@@ -651,7 +651,7 @@ class CNNScraper(NewspaperScraper):
                         ltext = 'http://www.cnn.com' + ltext
 
                     if ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
             index += 10
@@ -675,7 +675,7 @@ class CNNScraper(NewspaperScraper):
 
 class CNBCScraper(NewspaperScraper):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         links = []
         stop = False
@@ -703,7 +703,7 @@ class CNBCScraper(NewspaperScraper):
                     link = result.find('h3', class_="title")
                     ltext = link.find('a').get('href')
                     if ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
             index += 1
@@ -715,7 +715,7 @@ class CNBCScraper(NewspaperScraper):
 
 class USATodayScraper(NewspaperScraper):
     def get_pages (self, sleep_time=5):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         browser = webdriver.Chrome()
         browser.get('http://www.usatoday.com/search/' + self.searchTerm + '/')
@@ -739,7 +739,7 @@ class USATodayScraper(NewspaperScraper):
             link = last_search_item.find('a', class_='search-result-item-link').get('href')
             date_match = re.search('([0-9]{4}/[0-9]{2}/[0-9]{2})', link)
             if date_match is not None:
-                print date_match.group(1)
+                print(date_match.group(1))
 
             browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(sleep_time)
@@ -766,7 +766,7 @@ class USATodayScraper(NewspaperScraper):
                     ltext = 'http://www.usatoday.com/' + link
 
                     if ltext not in links:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
                 else:
                     continue
@@ -780,7 +780,7 @@ class USATodayScraper(NewspaperScraper):
 
 class WSJScraper(NewspaperScraperWithAuthentication):
     def get_pages (self, sleep_time=3):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         links = []
         stop = False
@@ -816,7 +816,7 @@ class WSJScraper(NewspaperScraperWithAuthentication):
                         ltext = 'http://www.wsj.com' + ltext
 
                     if ltext not in links and 'video' not in ltext:
-                        print ltext
+                        print(ltext)
                         links.append(ltext)
 
             index += 1
@@ -828,7 +828,7 @@ class WSJScraper(NewspaperScraperWithAuthentication):
 
 class NYTScraper(NewspaperScraperWithAuthentication):
     def get_pages (self, sleep_time=5):
-        print 'running get_pages()...'
+        print('running get_pages()...')
 
         profile = webdriver.FirefoxProfile()
         browser = webdriver.Firefox(profile)
@@ -864,7 +864,7 @@ class NYTScraper(NewspaperScraperWithAuthentication):
 
                         if section != 'video' and ltext not in links:
                             # print ltext
-                            print pub_div.get_text()
+                            print(pub_div.get_text())
                             links.append(ltext)
 
                     else:
