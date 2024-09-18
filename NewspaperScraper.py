@@ -627,7 +627,7 @@ class CNNScraper(NewspaperScraper):
         links = []
         index = 0
 
-        browser.get('http://www.cnn.com/search/?text=' + self.searchTerm)
+        browser.get('http://www.cnn.com/search?text=' + self.searchTerm)
         soup = BeautifulSoup(browser.page_source)
         search_results = int(soup.find('div', class_='cn cn--idx-0 search-results_msg').get_text().split()[4])
 
